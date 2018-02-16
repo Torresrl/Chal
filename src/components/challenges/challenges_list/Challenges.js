@@ -8,6 +8,7 @@ import ChallengesList from './ChallengesList';
 
 
 
+
 class Challenges extends Component {
 
 
@@ -17,8 +18,9 @@ class Challenges extends Component {
         return(
             <Button
                 style={styles.styleAddChal}
-                onPress={ () => {Actions.findChallenges()}}>
-                +
+                onPress={ () => {Actions.findChallenges()} }
+                iconName = "add"
+                >
             </Button>
         );
     };
@@ -26,7 +28,7 @@ class Challenges extends Component {
     static renderLeftButton = () => {
         return (
             <Button
-                style={styles.styleAddChal}
+                style={styles.styleCreateNewChal}
                 onPress={ () => {Actions.newChallenges()}}>
                 create new
             </Button>
@@ -61,7 +63,16 @@ const styles = {
     },
     styleAddChal: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingRight: 15,
+        marginTop: 30
+    },
+    styleCreateNewChal: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingLeft: 8,
+        marginBottom: 12
+
     }
 
 };
