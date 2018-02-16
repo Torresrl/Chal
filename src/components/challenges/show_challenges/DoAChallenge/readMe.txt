@@ -1,0 +1,1 @@
+Denne mappen har hovedsakelig ting som angår en spesiel challenge og en timeline av de som har fullført den.
