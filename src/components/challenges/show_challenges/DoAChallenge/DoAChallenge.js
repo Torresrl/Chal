@@ -122,13 +122,26 @@ class DoAChallenge extends Component {
                     <CardSection>
                         <Image source={{uri: `data:image/gif;base64,${image}`}}  style={imageStyle}/>
                     </CardSection>
-                    <CardSection>
-                        <Button onPress={() => {this.chooseImage()}}>
-                            Change Picture
-                        </Button>
-                        <Button onPress={() => {this.takeImage()}}>
-                            Change Picture
-                        </Button>
+                    <CardSection style={{justifyContent: 'space-around'}}>
+                        <Button onPress={() => {this.chooseImage()}}
+                                icon={{
+                                    name: 'photo',
+                                    color: 'black',
+                                    size: 35
+                                }}
+
+                                backgroundColor="#FFFFFF"
+                        />
+
+
+                        <Button onPress={() => {this.takeImage()}}
+                                icon={{
+                                    name: 'camera-alt',
+                                    color: 'black',
+                                    size: 35
+                                }}
+                                backgroundColor="#FFFFFF"
+                        />
                     </CardSection>
                 </Card>
             );
@@ -387,5 +400,7 @@ export default connect(mapStateToProps,
         addImageChallenge,
         challengDone,
         getCurrentUserComment,
-        doAChallengeNavBar
+        doAChallengeNavBar,
+        takePhoto,
+        uploadPhoto
     }) (DoAChallenge);

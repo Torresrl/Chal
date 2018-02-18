@@ -2,15 +2,15 @@ import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements'
 
-const Button = ({onPress, children, style, iconName}) => {
+const Button = ({onPress, children, style, textStyle,  iconName, iconSize}) => {
 
 
-    const { buttonStyle, textStyle } = styles;
+    const { buttonStyle, textStyleLocal } = styles;
 
     return (
         <TouchableOpacity onPress={onPress} style={[buttonStyle, style]}>
-            <Icon name={iconName} />
-            <Text style={textStyle}>
+            <Icon name={iconName} size={iconSize}/>
+            <Text style={[textStyleLocal, textStyle]}>
                 {children}
             </Text>
         </TouchableOpacity>
@@ -19,7 +19,7 @@ const Button = ({onPress, children, style, iconName}) => {
 
 const styles = {
 
-    textStyle: {
+    textStyleLocal: {
         alignSelf: 'center',
         color: 'black',
         fontSize: 16,

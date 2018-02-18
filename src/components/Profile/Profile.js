@@ -132,7 +132,7 @@ const styles = {
         width: null
     },
 
-    textStyle: {
+    textStyleLocal: {
       fontSize: 18,
       paddingLeft: 6
     },
