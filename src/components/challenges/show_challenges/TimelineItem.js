@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, Image} from 'react-native';
 import firebase from 'firebase';
+import {Icon} from 'react-native-elements';
 import {Card, Spinner, CardSection, Button} from '../../common';
 
 /*
@@ -229,11 +230,19 @@ class TimelineItem extends Component {
         } else {
             return (
                 <View style={buttonContainer}>
-                    <Button onPress={() => {this.updateVotes(true)}}>
-                        Up
+                    <Button
+                        onPress={() => {this.updateVotes(true)}}
+                        iconName={"keyboard-arrow-up"}
+                        iconSize={45}
+
+                        textStyle={{padding: 0}}
+                    >
                     </Button>
-                    <Button onPress={() => {this.updateVotes(false)}}>
-                        Down
+                    <Button onPress={() => {this.updateVotes(false)}}
+                        iconName={"keyboard-arrow-down"}
+                        iconSize={45}
+                            textStyle={{padding: 0}}
+                    >
                     </Button>
                     <Text style={styleVotes}>
                         {votes}
@@ -247,7 +256,7 @@ class TimelineItem extends Component {
 
     render(){
         const {comment, userName, postedAt} = this.props.post;
-        const {buttonContainer, commentContainer, styleDate} = styles;
+        const {styleVoteContainer, commentContainer, styleDate} = styles;
 
         //datoene er i millisekunder
         const postDate = parseInt(postedAt);
@@ -304,12 +313,7 @@ class TimelineItem extends Component {
                         {comment}
                     </Text>
                 </CardSection>
-                <CardSection>
-                    <View style={buttonContainer}>
-                        <Button>
-                            comment
-                        </Button>
-                    </View>
+                <CardSection style={styleVoteContainer}>
                     {this.renderVotes()}
                 </CardSection>
 
@@ -330,7 +334,8 @@ const styles = {
 
     buttonContainer: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        padding: 0
 
     },
 
@@ -340,8 +345,11 @@ const styles = {
     },
 
     styleVotes: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        padding: 10,
+    },
+
+    styleVoteContainer: {
+        padding: 0
     }
 
 };

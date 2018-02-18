@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import firebase from 'firebase';
 import {ScrollView, Text, Image, View} from 'react-native';
-import ImagePicker from 'react-native-image-picker';
 import {connect} from 'react-redux';
 import {takePhoto, uploadPhoto} from '../../../../Actions';
+import {Icon, Button, ButtonGroup} from 'react-native-elements';
 
 import {
-    Button,
     LargInput,
     Card,
     CardSection,
@@ -99,39 +98,19 @@ class DoAChallenge extends Component {
             followers: this.state.followers});
     }
 
-//TODO: gjøre denne om til egen common
+
     async chooseImage() {
         let response = await uploadPhoto();
         if(response != null) {
             this.onAddImage(response.base64);
         }
-        /*
+    }
 
-        const options = {
-            quality: 0
-        };
-
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
-            else {
-                let source = { uri: response.uri };
-                // You can also display the image using data:
-                //let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                this.onAddImage(response.data);
-            }
-        });
-        */
-
+    async takeImage() {
+        let response = await takePhoto();
+        if(response != null){
+            this.onAddImage(response.base64)
+        }
     }
 
     renderPictureNotDone() {
@@ -143,20 +122,54 @@ class DoAChallenge extends Component {
                     <CardSection>
                         <Image source={{uri: `data:image/gif;base64,${image}`}}  style={imageStyle}/>
                     </CardSection>
-                    <CardSection>
-                        <Button onPress={() => {this.chooseImage()}}>
-                            Change Picture
-                        </Button>
+                    <CardSection style={{justifyContent: 'space-around'}}>
+                        <Button onPress={() => {this.chooseImage()}}
+                                icon={{
+                                    name: 'photo',
+                                    color: 'black',
+                                    size: 35
+                                }}
+
+                                backgroundColor="#FFFFFF"
+                        />
+
+
+                        <Button onPress={() => {this.takeImage()}}
+                                icon={{
+                                    name: 'camera-alt',
+                                    color: 'black',
+                                    size: 35
+                                }}
+                                backgroundColor="#FFFFFF"
+                        />
                     </CardSection>
                 </Card>
             );
         } else {
             return (
                 <Card>
-                    <CardSection>
-                        <Button onPress={() => {this.chooseImage()}}>
-                            Add Image
-                        </Button>
+                    <CardSection style={{justifyContent: 'space-around'}}>
+                        <Button onPress={() => {this.chooseImage()}}
+                                icon={{
+                                    name: 'photo',
+                                    color: 'black',
+                                    size: 35
+                                }}
+
+                                backgroundColor="#FFFFFF"
+                        />
+
+
+                        <Button onPress={() => {this.takeImage()}}
+                                icon={{
+                                    name: 'camera-alt',
+                                    color: 'black',
+                                    size: 35
+                                }}
+                                backgroundColor="#FFFFFF"
+                        />
+
+
                     </CardSection>
                 </Card>
             );
@@ -187,9 +200,7 @@ class DoAChallenge extends Component {
         const{done} = this.props.challenge;
         const{comment} = this.props;
         const {
-            CommentCardStyle,
-            styleButtonCard,
-            styleButton,
+            CommentCardStyle
         } = styles;
 
         if(done){
@@ -220,14 +231,15 @@ class DoAChallenge extends Component {
                         />
                     </Card>
 
-                    <Card style={styleButtonCard}>
+
+
                         <Button
-                            style={styleButton}
-                            onPress={() => this.onChallengeFinished()}
-                        >
-                            Confirm
-                        </Button>
-                    </Card>
+                            onPress= {() => this.onChallengeFinished()}
+                            title="Confirm"
+                            large
+                        />
+
+
                 </View>
             )
         }
@@ -275,8 +287,8 @@ class DoAChallenge extends Component {
     }
 
     render(){
-        const{name, description, challengeId} = this.props.challenge;
-        const {challengesId, owner, error} = this.props;
+        const{name, description} = this.props.challenge;
+        const { error} = this.props;
         const {
             headerStyle,
             headerCardStyle,
@@ -295,16 +307,33 @@ class DoAChallenge extends Component {
                 </Card>
                 {this.renderContentDoneOrNot()}
                 <Text style={errorTextStyle}>{error}</Text>
-                <CardSection>
-                    <Button onPress={() => this.navBar('all')}>
-                        All
-                    </Button>
-                    <Button onPress= {() => this.navBar('friends')}>
-                        Friends
-                    </Button>
-                    <Button onPress= {() => this.navBar('top')}>
-                        Top
-                    </Button>
+                <CardSection style={{justifyContent: 'space-around'}}>
+                    <Button
+                        onPress={() => this.navBar('all')}
+                        title="All"
+                        large
+                        backgroundColor="#FFFFFF"
+                        color="#000000"
+                    />
+
+                    <Button
+                        onPress= {() => this.navBar('friends')}
+                        title="Friends"
+                        large
+                        backgroundColor="#FFFFFF"
+                        color="#000000"
+                    />
+
+
+                    <Button
+                        onPress= {() => this.navBar('top')}
+                        title="Top"
+                        large
+                        backgroundColor="#FFFFFF"
+                        color="#000000"
+                    />
+
+
                 </CardSection>
                 <CardSection>
                     {this.renderList()}
@@ -349,14 +378,11 @@ const styles = {
         flexDirection: 'row',
         marginBottom: 10
     },
-    styleButton: {
-        borderWidth: 1
-    },
 
     errorTextStyle: {
         color: 'red',
         fontSize: 12,
-        alignSelf: 'center'
+        alignSelf: 'center',
     }
 
 
@@ -374,5 +400,7 @@ export default connect(mapStateToProps,
         addImageChallenge,
         challengDone,
         getCurrentUserComment,
-        doAChallengeNavBar
+        doAChallengeNavBar,
+        takePhoto,
+        uploadPhoto
     }) (DoAChallenge);

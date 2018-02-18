@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Text, Image, ScrollView, View, Modal} from 'react-native';
-import ImagePicker from 'react-native-image-picker';
 import {connect} from 'react-redux';
 import {Button, Input, Card, CardSection, Spinner, LargInput} from '../../common';
 import AddChallengeList from './AddChallengeList';
@@ -8,7 +7,9 @@ import EditChallenge from './EditChallenge';
 import {nameChange,
     descriptionChange,
     addImage,
-    makeModalNotVisible
+    makeModalNotVisible,
+    takePhoto,
+    uploadPhoto
 }from '../../../Actions';
 
 
@@ -35,16 +36,27 @@ class NewChallenges extends Component {
 
     renderPicture(){
         const {image} = this.props;
-        const{styleFirstCard, imageStyle} = styles;
+        const{styleFirstCard, imageStyle, chooseImageContainer} = styles;
         if(image){
             return (
                 <Card style={styleFirstCard}>
                     <CardSection>
                         <Image source={{uri: `data:image/gif;base64,${image}`}}  style={imageStyle}/>
                     </CardSection>
-                    <CardSection>
-                        <Button onPress={() => {this.chooseImage()}}>
-                            Change Picture
+                    <CardSection style={chooseImageContainer}>
+                        <Button
+                            onPress={() => {this.chooseImage()}}
+                            iconName={'photo'}
+                            iconSize={35}
+                        >
+                            Choose Image
+                        </Button>
+                        <Button
+                            onPress={() => {this.takeImage()}}
+                            iconName={'camera-alt'}
+                            iconSize={35}
+                        >
+                            Take Image
                         </Button>
                     </CardSection>
                 </Card>
@@ -52,40 +64,38 @@ class NewChallenges extends Component {
         } else {
             return (
                 <Card style={styleFirstCard}>
-                    <CardSection>
-                        <Button onPress={() => {this.chooseImage()}}>
-                            Add Picture
-                        </Button>
+                    <CardSection style={chooseImageContainer}>
+                        <Button
+                            onPress={() => {this.chooseImage()}}
+                            iconName={'photo'}
+                            iconSize={35}
+
+                        />
+
+                        <Button
+                            onPress={() => {this.takeImage()}}
+                            iconName={'camera-alt'}
+                            iconSize={35}
+                        />
+
                     </CardSection>
                 </Card>
             );
         }
     }
 
-    chooseImage() {
-        const options = {
-            quality: 0
-        };
+    async chooseImage() {
+        let response = await uploadPhoto();
+        if(response != null) {
+            this.onAddImage(response.base64);
+        }
+    }
 
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            }
-            else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            }
-            else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            }
-            else {
-                let source = { uri: response.uri };
-                // You can also display the image using data:
-                //let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                this.onAddImage(response.data);
-            }
-        });
+    async takeImage() {
+        let response = await takePhoto();
+        if(response != null){
+            this.onAddImage(response.base64)
+        }
     }
 
     renderModal(){
@@ -227,6 +237,11 @@ const styles = {
         flex: 1,
         marginBottom: 10
 
+    },
+
+    chooseImageContainer: {
+        justifyContent: 'space-around',
+        paddingBottom: 0
     }
 
 };
@@ -261,5 +276,7 @@ export default connect(mapStateToProps, {
         nameChange,
         descriptionChange,
         addImage,
-    makeModalNotVisible
+    makeModalNotVisible,
+    takePhoto,
+    uploadPhoto
     })(NewChallenges);
