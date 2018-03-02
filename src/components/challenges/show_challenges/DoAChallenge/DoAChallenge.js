@@ -109,7 +109,7 @@ class DoAChallenge extends Component {
     async takeImage() {
         let response = await takePhoto();
         if(response != null){
-            this.onAddImage(response.base64)
+            this.onAddImage(response)
         }
     }
 
@@ -120,7 +120,7 @@ class DoAChallenge extends Component {
             return (
                 <Card>
                     <CardSection>
-                        <Image source={{uri: `data:image/gif;base64,${image}`}}  style={imageStyle}/>
+                        <Image source={{uri: image.uri}}  style={imageStyle}/>
                     </CardSection>
                     <CardSection style={{justifyContent: 'space-around'}}>
                         <Button onPress={() => {this.chooseImage()}}
