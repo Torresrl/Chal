@@ -95,16 +95,18 @@ export const addChallenges = ({name, description, image, challenges, mainImage})
      // TODO: blob er kommentert ut, denne skal inn i dependencies i package.json
      // "react-native-fetch-blob": "^0.10.6",
 
-    /*
+
 
     const {currentUser} = firebase.auth();
     const challengesId = firebase.database().ref('posts').push().key;
 
     // Prepare Blob support
+    /*
     const polyfill = RNFetchBlob.polyfill;
     const Blob = RNFetchBlob.polyfill.Blob;
     window.XMLHttpRequest = polyfill.XMLHttpRequest;
     window.Blob = polyfill.Blob;
+    */
 
     if(name.length == null || name.length === 0){
         return {
@@ -195,7 +197,7 @@ export const addChallenges = ({name, description, image, challenges, mainImage})
 
     }
 
-    */
+
 };
 
 

@@ -55,7 +55,7 @@ class TimelineItem extends Component {
             } );
     }
 
-
+    //TODO flytte dette til server
     //Database funskjoner:
     updateVotes(upVote){ //upVote
         const {challengesId} = this.props;

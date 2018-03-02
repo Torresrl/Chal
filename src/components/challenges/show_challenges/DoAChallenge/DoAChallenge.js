@@ -102,7 +102,7 @@ class DoAChallenge extends Component {
     async chooseImage() {
         let response = await uploadPhoto();
         if(response != null) {
-            this.onAddImage(response.base64);
+            this.onAddImage(response);
         }
     }
 

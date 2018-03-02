@@ -50,7 +50,7 @@ export const getCurrentUserComment = (challengesId, challengeId) => {
             });
     }
 };
-//TODO sørg for at når du laster opp bilde begynner den ikke å leite med en gang eller at den venter?
+
 //brukes til å oppdatere flere poster samtidig
 export const challengDone = (object) => {
     const {currentUser} = firebase.auth();
@@ -195,8 +195,26 @@ const fanoutPost =({challengeId, challengesId, followers, post, owner}) => {
 };
 
 //TODO husk å åpne for blob
-const uploadImage = (image, challengesId, challengeId) => {
+async function uploadImage(image, challengesId, challengeId){
     const{currentUser} = firebase.auth();
+
+    const name = 'image.jpg';
+    const body = new FormData();
+
+    body.append("image", {
+        uri: image.uri,
+        name,
+        type: 'image/jpg'
+    });
+
+    const res = await fetch("https://us-central1-challenges-840a4.cloudfunctions.net/api1/picture", {
+        method: "POST",
+        body,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data"
+        }
+    });
 
     // TODO: blob er kommentert ut, denne skal inn i dependencies i package.json
     // "react-native-fetch-blob": "^0.10.6",
