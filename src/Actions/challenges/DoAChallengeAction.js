@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 //import RNFetchBlob from 'react-native-fetch-blob';
+import {uploadPhotoToServer} from '../mediaAction/photo';
 import {COMMENT_CHANGE,
     DO_CHALLENG_ADD_IMAGE,
     DO_CHALLENGE_TIMELINE_FETCH,
@@ -7,6 +8,7 @@ import {COMMENT_CHANGE,
     DO_A_CHALLENGE_NAV_BAR,
     DO_CHALLENGE_TIMELINE_TOP_FETCH
 } from '../types';
+
 
 export const commentChange = (text) => {
     return {
@@ -85,7 +87,9 @@ export const challengDone = (object) => {
         });
 
         return () => {
-            uploadImage(image, challengesId, challengeId);
+            const location = `*challenges*${challengesId}*${challengeId}*timeline*${currentUser.uid}`;
+            uploadPhotoToServer(location, image);
+            //uploadImage(image, challengesId, challengeId);
             database.ref().update(fanoutObj);
 
         }
@@ -192,44 +196,4 @@ const fanoutPost =({challengeId, challengesId, followers, post, owner}) => {
         '/challenges/' +challengeId + '/done'] = true;
 
     return fanoutObj;
-};
-
-//TODO husk å åpne for blob
-async function uploadImage(image, challengesId, challengeId){
-    const{currentUser} = firebase.auth();
-
-    const name = 'image.jpg';
-    const body = new FormData();
-
-    body.append("image", {
-        uri: image.uri,
-        name,
-        type: 'image/jpg'
-    });
-
-    const res = await fetch("https://us-central1-challenges-840a4.cloudfunctions.net/api1/picture", {
-        method: "POST",
-        body,
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data"
-        }
-    });
-
-    // TODO: blob er kommentert ut, denne skal inn i dependencies i package.json
-    // "react-native-fetch-blob": "^0.10.6",
-
-    // Prepare Blob support
-    //const polyfill = RNFetchBlob.polyfill;
-    //const Blob = RNFetchBlob.polyfill.Blob;
-    //window.XMLHttpRequest = polyfill.XMLHttpRequest;
-    //window.Blob = polyfill.Blob;
-
-
-    /*Blob.build(image, {type: 'image/png;BASE64'})
-        .then((blob) => firebase.storage()
-        .ref(`/challenges/${challengesId}/${challengeId}/timeline/${currentUser.uid}`)
-        .put(blob, {contentType: 'image/png'})
-        );
-        */
 };

@@ -41,7 +41,7 @@ class NewChallenges extends Component {
             return (
                 <Card style={styleFirstCard}>
                     <CardSection>
-                        <Image source={{uri: `data:image/gif;base64,${image}`}}  style={imageStyle}/>
+                        <Image source={{uri: image.uri}}  style={imageStyle}/>
                     </CardSection>
                     <CardSection style={chooseImageContainer}>
                         <Button
@@ -87,14 +87,14 @@ class NewChallenges extends Component {
     async chooseImage() {
         let response = await uploadPhoto();
         if(response != null) {
-            this.onAddImage(response.base64);
+            this.onAddImage(response);
         }
     }
 
     async takeImage() {
         let response = await takePhoto();
         if(response != null){
-            this.onAddImage(response.base64)
+            this.onAddImage(response)
         }
     }
 
