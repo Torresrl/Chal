@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 //import RNFetchBlob from 'react-native-fetch-blob';
 import {Platform} from 'react-native';
+import {uploadPhotoToServer} from '../mediaAction/photo';
 
 import {CHALLENGES_NAME,
         CHALLENGES_DESCRIPTION,
@@ -95,16 +96,11 @@ export const addChallenges = ({name, description, image, challenges, mainImage})
      // TODO: blob er kommentert ut, denne skal inn i dependencies i package.json
      // "react-native-fetch-blob": "^0.10.6",
 
-    /*
+
 
     const {currentUser} = firebase.auth();
     const challengesId = firebase.database().ref('posts').push().key;
 
-    // Prepare Blob support
-    const polyfill = RNFetchBlob.polyfill;
-    const Blob = RNFetchBlob.polyfill.Blob;
-    window.XMLHttpRequest = polyfill.XMLHttpRequest;
-    window.Blob = polyfill.Blob;
 
     if(name.length == null || name.length === 0){
         return {
@@ -130,8 +126,6 @@ export const addChallenges = ({name, description, image, challenges, mainImage})
                 .ref(`/challenges/${challengesId}`)
                 .set({name, description, owner: currentUser.uid, challengesId, challenges, mainImage})
                 .then(() => {
-
-
                     firebase.database()
                         .ref(`/Users/${currentUser.uid}/myChallenges/${challengesId}`)
                         .set({
@@ -145,21 +139,16 @@ export const addChallenges = ({name, description, image, challenges, mainImage})
                         })
                 })
                 .then(() => {
-                    Blob.build(image, {type: 'image/png;BASE64'})
-                        .then((blob) => firebase.storage()
-                            .ref(`/challenges/${challengesId}/mainImage`)
-                            .put(blob, {contentType: 'image/png'})
-                        )
-                        .then(() => {
-                            dispatch({
-                                type: CHALLENGES_CREATED
-                            });
-                            Actions.challenges({type: 'reset'});
-
-                        });
-
-
+                    const location = `*challenges*${challengesId}*mainImage`;
+                    uploadPhotoToServer(location, image);
+                }).then(() => {
+                    Actions.main({type: 'reset'});
+                }).then(() => {
+                    dispatch({
+                    type: CHALLENGES_CREATED
                 });
+
+            });
         };
     } else {
         return (dispatch) => {
@@ -188,14 +177,14 @@ export const addChallenges = ({name, description, image, challenges, mainImage})
                 dispatch({
                     type: CHALLENGES_CREATED
                 });
-                Actions.challenges({type: 'reset'});
+                Actions.main({type: 'reset'});
 
             });
         };
 
     }
 
-    */
+
 };
 
 

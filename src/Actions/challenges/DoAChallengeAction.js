@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 //import RNFetchBlob from 'react-native-fetch-blob';
+import {uploadPhotoToServer} from '../mediaAction/photo';
 import {COMMENT_CHANGE,
     DO_CHALLENG_ADD_IMAGE,
     DO_CHALLENGE_TIMELINE_FETCH,
@@ -7,6 +8,7 @@ import {COMMENT_CHANGE,
     DO_A_CHALLENGE_NAV_BAR,
     DO_CHALLENGE_TIMELINE_TOP_FETCH
 } from '../types';
+
 
 export const commentChange = (text) => {
     return {
@@ -50,7 +52,7 @@ export const getCurrentUserComment = (challengesId, challengeId) => {
             });
     }
 };
-//TODO sørg for at når du laster opp bilde begynner den ikke å leite med en gang eller at den venter?
+
 //brukes til å oppdatere flere poster samtidig
 export const challengDone = (object) => {
     const {currentUser} = firebase.auth();
@@ -85,7 +87,9 @@ export const challengDone = (object) => {
         });
 
         return () => {
-            uploadImage(image, challengesId, challengeId);
+            const location = `*challenges*${challengesId}*${challengeId}*timeline*${currentUser.uid}`;
+            uploadPhotoToServer(location, image);
+            //uploadImage(image, challengesId, challengeId);
             database.ref().update(fanoutObj);
 
         }
@@ -192,26 +196,4 @@ const fanoutPost =({challengeId, challengesId, followers, post, owner}) => {
         '/challenges/' +challengeId + '/done'] = true;
 
     return fanoutObj;
-};
-
-//TODO husk å åpne for blob
-const uploadImage = (image, challengesId, challengeId) => {
-    const{currentUser} = firebase.auth();
-
-    // TODO: blob er kommentert ut, denne skal inn i dependencies i package.json
-    // "react-native-fetch-blob": "^0.10.6",
-
-    // Prepare Blob support
-    //const polyfill = RNFetchBlob.polyfill;
-    //const Blob = RNFetchBlob.polyfill.Blob;
-    //window.XMLHttpRequest = polyfill.XMLHttpRequest;
-    //window.Blob = polyfill.Blob;
-
-
-    /*Blob.build(image, {type: 'image/png;BASE64'})
-        .then((blob) => firebase.storage()
-        .ref(`/challenges/${challengesId}/${challengeId}/timeline/${currentUser.uid}`)
-        .put(blob, {contentType: 'image/png'})
-        );
-        */
 };

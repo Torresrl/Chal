@@ -18,7 +18,7 @@ import {CHALLENGES_NAME,
 const INITIAL_STATE = {
     nameChallenges: "",
     description: "",
-    image: "",
+    image: null,
     challengesError: "",
     challengeName: "",
     challengeDes: "",
