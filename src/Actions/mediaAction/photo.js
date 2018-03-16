@@ -53,7 +53,7 @@ export async function uploadPhotoToServer(location, image) {
             type: 'image/jpg'
         });
 
-        const res = await fetch("https://us-central1-challenges-840a4.cloudfunctions.net/upload_image_api", {
+        const res = await fetch("https://us-central1-challenges-840a4.cloudfunctions.net/upload_image_api/picture", {
             method: "POST",
             body,
             headers: {
