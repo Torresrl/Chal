@@ -5,14 +5,14 @@ import {
 } from '../../Actions/types';
 
 const INITIAL_STATE = {
-    code: "",
+    code: "-",
     error: ""
 };
 
 export default(state = INITIAL_STATE, action) => {
     switch (action.type){
         case CODE_CHANGE:
-            return {...state, code: "-" + action.payload};
+            return {...state, code: "" + action.payload};
         case JOIN_CHALLENGE_SUCCESS:
             return {...state, code: ""};
         case JOIN_CHALLENGE_FAIL:
