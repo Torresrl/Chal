@@ -13,8 +13,6 @@ import {Spinner, Card, CardSection, Button} from '../../common';
 import ShowChallengesListItem from './ShowChallengesListItem';
 
 
-
-
 class ShowChallenges extends Component {
 
     componentWillMount(){
@@ -34,7 +32,6 @@ class ShowChallenges extends Component {
     navBar(chooseList){
         const{challenges} = this.props.challenges;
         let challengeList = null;
-
 
         console.log(challenges);
 
@@ -57,18 +54,14 @@ class ShowChallenges extends Component {
                     return challenges;
                 }
             });
-
         }
-
 
         const challengeList2 = _.map(challengeList, (val, uid) => {
             return {...val, uid};
         });
 
         this.setState({challengeList: challengeList2});
-
     }
-
 
     createDataSource(){
         const {challengeList} = this.state;
@@ -77,7 +70,6 @@ class ShowChallenges extends Component {
         });
 
         this.dataSource = ds.cloneWithRows(challengeList);
-
     }
 
 

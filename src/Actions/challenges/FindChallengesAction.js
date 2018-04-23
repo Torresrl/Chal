@@ -53,7 +53,7 @@ const joinChallengeSuccess = (dispatch) => {
     dispatch({
         type: JOIN_CHALLENGE_SUCCESS
     });
-    Actions.challenges({type: 'reset'});
+    Actions.main({type: 'reset'});
 };
 
 const joinChallengeFail = (dispatch) => {

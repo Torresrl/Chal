@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, Image} from 'react-native';
 import firebase from 'firebase';
+import {Icon} from 'react-native-elements';
 import {Card, Spinner, CardSection, Button} from '../../common';
 
 /*
@@ -54,7 +55,6 @@ class TimelineItem extends Component {
             } );
     }
 
-
     //Database funskjoner:
     updateVotes(upVote){ //upVote
         const {challengesId} = this.props;
@@ -92,22 +92,11 @@ class TimelineItem extends Component {
     //lager fanout object, gjør sånn du får atmoic update for voting
     fanoutPost = ({votes}) => {
         const {currentUser} = firebase.auth();
-        const {challengesId, challengeId, owner} = this.props;
+        const {challengesId, challengeId} = this.props;
         const {userId} = this.props.post;
-        const {followers} = this.state;
 
         let fanoutObj = {};
 
-        console.log(followers);
-
-        if(followers && followers.length > 0) {
-            followers.forEach((key) => fanoutObj[
-            '/Users/' + key +
-            '/myChallenges/' + challengesId +
-            '/challenges/' + challengeId +
-            '/timeline/' + userId +
-            '/votes'] = votes);
-        }
 
         fanoutObj['/Users/' + currentUser.uid +
         '/myChallenges/' + challengesId +
@@ -115,20 +104,12 @@ class TimelineItem extends Component {
         '/timeline/' + userId +
         '/voted'] = true;
 
-        fanoutObj[
-        '/Users/' + owner +
-        '/myChallenges/' + challengesId +
-        '/challenges/' +challengeId +
-        '/timeline/' + userId +
-        '/votes'] = votes;
 
         fanoutObj[
         '/challenges/' + challengesId +
         '/challenges/' +challengeId +
         '/timeline/' + userId +
         '/votes'] = votes;
-
-
 
         return fanoutObj;
 
@@ -229,11 +210,19 @@ class TimelineItem extends Component {
         } else {
             return (
                 <View style={buttonContainer}>
-                    <Button onPress={() => {this.updateVotes(true)}}>
-                        Up
+                    <Button
+                        onPress={() => {this.updateVotes(true)}}
+                        iconName={"keyboard-arrow-up"}
+                        iconSize={45}
+
+                        textStyle={{padding: 0}}
+                    >
                     </Button>
-                    <Button onPress={() => {this.updateVotes(false)}}>
-                        Down
+                    <Button onPress={() => {this.updateVotes(false)}}
+                        iconName={"keyboard-arrow-down"}
+                        iconSize={45}
+                            textStyle={{padding: 0}}
+                    >
                     </Button>
                     <Text style={styleVotes}>
                         {votes}
@@ -247,7 +236,7 @@ class TimelineItem extends Component {
 
     render(){
         const {comment, userName, postedAt} = this.props.post;
-        const {buttonContainer, commentContainer, styleDate} = styles;
+        const {styleVoteContainer, commentContainer, styleDate} = styles;
 
         //datoene er i millisekunder
         const postDate = parseInt(postedAt);
@@ -304,12 +293,7 @@ class TimelineItem extends Component {
                         {comment}
                     </Text>
                 </CardSection>
-                <CardSection>
-                    <View style={buttonContainer}>
-                        <Button>
-                            comment
-                        </Button>
-                    </View>
+                <CardSection style={styleVoteContainer}>
                     {this.renderVotes()}
                 </CardSection>
 
@@ -330,7 +314,8 @@ const styles = {
 
     buttonContainer: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        padding: 0
 
     },
 
@@ -340,8 +325,11 @@ const styles = {
     },
 
     styleVotes: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        padding: 10,
+    },
+
+    styleVoteContainer: {
+        padding: 0
     }
 
 };
