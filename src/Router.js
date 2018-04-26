@@ -87,17 +87,16 @@ const RouterComponent = () => {
                     </Scene>
                     <Scene key="tabProfile" title="Profile" icon={TabIcon}>
                         <Scene
-                            renderRightButton={Challenges.editProfileButton}
-                            rightTitle="Edit"
                             key="profile"
                             component={Profile}
                             title="Profile"
-                        >
+                            onRight={() => Actions.profileEditForm()}
+                            rightTitle="Edit"
+                        />
                             <Scene
                             onRight={() => Actions.displayNewProfilePicture()}
                             rightTitle="New Photo"
                             key="profileEditForm"
-                            type="reset"
                             component={ProfileEdit}
                             title="Edit Profile"
                             />
@@ -127,7 +126,7 @@ const RouterComponent = () => {
                             component={DisplayProfilePicture}
                             title="Photo"
                             />
-                         </Scene>
+
                     </Scene>
                 </Scene>
             </Scene>
