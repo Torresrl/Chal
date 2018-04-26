@@ -37,7 +37,7 @@ class LoginForm extends Component {
         }
 
         return (
-            <Card style={styles.cardStyle}>
+            <Card>
                 <CardSection >
                     <Input
                         placeholder="user@gmail.com"
@@ -95,10 +95,6 @@ const styles = {
         alignItems: 'center',
         marginTop: 250
 
-    },
-
-    cardStyle: {
-        marginTop: 70
     }
 };
 

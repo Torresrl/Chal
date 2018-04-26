@@ -87,45 +87,47 @@ const RouterComponent = () => {
                     </Scene>
                     <Scene key="tabProfile" title="Profile" icon={TabIcon}>
                         <Scene
-                            onRight={() => Actions.profileEditForm()}
+                            renderRightButton={Challenges.editProfileButton}
                             rightTitle="Edit"
                             key="profile"
                             component={Profile}
                             title="Profile"
-                        />
-                        <Scene
-                        onRight={() => Actions.displayNewProfilePicture()}
-                        rightTitle="New Photo"
-                        key="profileEditForm"
-                        type="reset"
-                        component={ProfileEdit}
-                        title="Edit Profile">
-                        </Scene>
+                        >
+                            <Scene
+                            onRight={() => Actions.displayNewProfilePicture()}
+                            rightTitle="New Photo"
+                            key="profileEditForm"
+                            type="reset"
+                            component={ProfileEdit}
+                            title="Edit Profile"
+                            />
 
-                        <Scene
-                        key="reauthenticateUser"
-                        component={ReauthenticateUser}
-                        title="Re-authentication"
-                        />
 
-                        <Scene
-                        key="newPasswordForm"
-                        component={NewPasswordForm}
-                        title={'New Password'}
-                        type="reset"
-                        />
-                        <Scene
-                        key="newEmailForm"
-                        component={NewEmailForm}
-                        title={'New Email'}
-                        type="reset"
-                        />
+                            <Scene
+                            key="reauthenticateUser"
+                            component={ReauthenticateUser}
+                            title="Re-authentication"
+                            />
 
-                        <Scene
-                        key="displayNewProfilePicture"
-                        component={DisplayProfilePicture}
-                        title="Photo"
-                        />
+                            <Scene
+                            key="newPasswordForm"
+                            component={NewPasswordForm}
+                            title={'New Password'}
+                            type="reset"
+                            />
+                            <Scene
+                            key="newEmailForm"
+                            component={NewEmailForm}
+                            title={'New Email'}
+                            type="reset"
+                            />
+
+                            <Scene
+                            key="displayNewProfilePicture"
+                            component={DisplayProfilePicture}
+                            title="Photo"
+                            />
+                         </Scene>
                     </Scene>
                 </Scene>
             </Scene>

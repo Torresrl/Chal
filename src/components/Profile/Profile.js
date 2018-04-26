@@ -12,6 +12,16 @@ import { Card, CardSection, Button } from '../common';
 
 class Profile extends Component {
 
+    static editProfileButton = () => {
+        return (
+            <Button
+                //style={styles.styleCreateNewChal}
+                onPress={ () => {Actions.profileEditForm()}}>
+                create new
+            </Button>
+        );
+    };
+
 
   componentWillMount() {
     this.props.userInfoFetch();
