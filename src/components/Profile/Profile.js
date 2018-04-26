@@ -12,7 +12,6 @@ import { Card, CardSection, Button } from '../common';
 
 class Profile extends Component {
 
-
   componentWillMount() {
     this.props.userInfoFetch();
     console.log('Profile picture fetch successful');
@@ -163,6 +162,14 @@ const styles = {
       styleButton: {
           borderWidth: 1
       },
+
+    editProfile: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingLeft: 8,
+        marginBottom: 12
+
+    }
 
 
 };
