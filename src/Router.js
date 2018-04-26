@@ -37,7 +37,7 @@ const RouterComponent = () => {
     return (
 
         <Router>
-            <Scene key="root">
+            <Scene key="root" hideNavBar>
                 {/* Scenene for Login*/}
                 <Scene key="auth">
                     <Scene key="login" component={LoginForm} title="Challenges" />
