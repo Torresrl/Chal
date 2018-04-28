@@ -1,4 +1,4 @@
-import { ImagePicker } from 'expo';
+import { ImagePicker, Permissions } from 'expo';
 
 let quality = 0.3;
 
@@ -7,6 +7,12 @@ let quality = 0.3;
 export async function takePhoto() {
     // Display the camera to the user and wait for them to take a photo or to cancel
     // the action
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+
+    if (status !== 'granted'){
+        return null;
+    }
+
     let result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
@@ -25,6 +31,12 @@ export async function takePhoto() {
 
 //user kan choose a photo from libary
 export async function uploadPhoto() {
+
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    if (status !== 'granted'){
+        return null;
+    }
     let result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         aspect: [4, 3],
@@ -36,6 +48,7 @@ export async function uploadPhoto() {
     if (result.cancelled) {
         return null;
     }
+
 
     return result
 
