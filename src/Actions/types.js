@@ -79,3 +79,6 @@ export const USER_UPDATE = 'user_update';
 export const USER_UPLOAD_UPDATE_SUCCESS = 'uploaded_success';
 export const INVALID_NAME = 'invalid_name';
 export const INVALID_NUMBER = 'invalid_number';
+
+//Feed
+export const FEED_FETCH_SUCCESS = 'FEED_FETCH_SUCCESS';

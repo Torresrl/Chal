@@ -10,4 +10,6 @@ export * from './challenges/DoAChallengeAction';
 
 export * from './mediaAction/photo';
 
+export * from './feed/FetchFeed';
+
 
