@@ -7,7 +7,6 @@ import {FlatList} from 'react-native';
 import TimelineItem from '../components/challenges/show_challenges/TimelineItem'
 
 
-
 class Feed extends Component {
 
     componentWillMount() {
@@ -27,13 +26,11 @@ class Feed extends Component {
     }
 
     render() {
-
-
         return(
             <FlatList
                 data={this.props.data}
                 renderItem={({item}) => this.renderItem(item)}
-                keyExtractor={item => item.challengesId + item.challengeId + item.userId }
+                keyExtractor={(item, index) => index}
             />
         );
     }
@@ -45,7 +42,6 @@ const mapStateToProps = ({feedReducer}) => {
         return {...val, uid}
     });
 
-    console.log(data);
     return {data};
 };
 
