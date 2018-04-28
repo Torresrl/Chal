@@ -8,6 +8,7 @@ import ShowChallengesReducer from './challenges/ShowChallengesReducer';
 import FindChallengesReducer from './challenges/FindChallengesReducer';
 import DoAChallengeReducer from './challenges/DoAChallengeReducer';
 import ProfileReducer from './login/ProfileReducer';
+import FeedReducer from './feed/FeedReducer';
 
 export default combineReducers({
     auth: AuthReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     showChallenges: ShowChallengesReducer,
     findChallenges: FindChallengesReducer,
     doAChallenge: DoAChallengeReducer,
-    profile: ProfileReducer
+    profile: ProfileReducer,
+    feedReducer: FeedReducer
 });
