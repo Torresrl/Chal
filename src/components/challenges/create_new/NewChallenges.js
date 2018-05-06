@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, Image, ScrollView, View, Modal} from 'react-native';
+import {KeyboardAvoidingView, Text, Image, ScrollView, View, Modal} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, Input, Card, CardSection, Spinner, LargInput} from '../../common';
 import AddChallengeList from './AddChallengeList';
@@ -142,6 +142,7 @@ class NewChallenges extends Component {
         }
 
         return (
+            <KeyboardAvoidingView  keyboardVerticalOffset={45} behavior={"position"}>
             <ScrollView >
                 {this.renderPicture()}
                 <Card>
@@ -172,6 +173,7 @@ class NewChallenges extends Component {
                     button2 = 'Submit'
                 />
             </ScrollView>
+            </KeyboardAvoidingView>
 
         );
     }
