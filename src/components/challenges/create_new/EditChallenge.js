@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, Text} from 'react-native';
+import {Text, View, KeyboardAvoidingView} from 'react-native';
 import {Card, CardSection, Input, Button, LargInput} from '../../common';
 import {
     challengeNameChange,
@@ -52,11 +52,13 @@ class EditChallenge extends Component{
     }
 
     render() {
-        const {styleButtonCard, styleAddButton, errorTextStyle} = styles;
+        const {containerStyle, styleButtonCard, styleAddButton, errorTextStyle} = styles;
         const {challengeName, challengeDes, error} = this.props;
 
         return (
+
             <View>
+
                 <Card>
                     <CardSection>
                         <Input
@@ -92,13 +94,17 @@ class EditChallenge extends Component{
                     >
                         {this.props.button2}
                     </Button>
+
                 </Card>
             </View>
+
         );
     }
 }
 
 const styles = {
+
+
     styleAddButton: {
         borderWidth: 1
     },

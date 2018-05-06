@@ -8,14 +8,14 @@ class AddChallengeList extends Component {
 
     renderRow(rowData){
         return (
-            <Card>
-                <CardSection>
-                    <Text style={styles.nameStyle}>{rowData.name}</Text>
-                </CardSection>
-                <CardSection>
-                    <Text style={styles.descriptionStyle}>{rowData.description}</Text>
-                </CardSection>
-            </Card>
+                <Card>
+                    <CardSection>
+                        <Text style={styles.nameStyle}>{rowData.name}</Text>
+                    </CardSection>
+                    <CardSection>
+                        <Text style={styles.descriptionStyle}>{rowData.description}</Text>
+                    </CardSection>
+                </Card>
         );
     }
 
