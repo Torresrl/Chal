@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
 import {KeyboardAvoidingView, Text, Image, ScrollView, View, Modal} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, Input, Card, CardSection, Spinner, LargInput} from '../../common';
+import {Button, Input, Card, CardSection, Spinner, LargInput, ImageGetter} from '../../common';
 import AddChallengeList from './AddChallengeList';
 import EditChallenge from './EditChallenge';
 import {nameChange,
     descriptionChange,
     addImage,
     makeModalNotVisible,
-    takePhoto,
-    uploadPhoto
 }from '../../../Actions';
 
 
@@ -24,10 +22,6 @@ class NewChallenges extends Component {
         this.props.descriptionChange(text);
     }
 
-    onAddImage(text){
-        this.props.addImage(text);
-
-    }
 
     makeModalNotVisible(){
         this.props.makeModalNotVisible();
@@ -36,67 +30,26 @@ class NewChallenges extends Component {
 
     renderPicture(){
         const {image} = this.props;
-        const{styleFirstCard, imageStyle, chooseImageContainer} = styles;
+        const{styleFirstCard, imageStyle} = styles;
         if(image){
             return (
                 <Card style={styleFirstCard}>
                     <CardSection>
                         <Image source={{uri: image.uri}}  style={imageStyle}/>
                     </CardSection>
-                    <CardSection style={chooseImageContainer}>
-                        <Button
-                            onPress={() => {this.chooseImage()}}
-                            iconName={'photo'}
-                            iconSize={35}
-                        >
-                            Choose Image
-                        </Button>
-                        <Button
-                            onPress={() => {this.takeImage()}}
-                            iconName={'camera-alt'}
-                            iconSize={35}
-                        >
-                            Take Image
-                        </Button>
-                    </CardSection>
+                    <ImageGetter onAddImage={(response) => this.props.addImage(response)}/>
                 </Card>
             );
         } else {
             return (
                 <Card style={styleFirstCard}>
-                    <CardSection style={chooseImageContainer}>
-                        <Button
-                            onPress={() => {this.chooseImage()}}
-                            iconName={'photo'}
-                            iconSize={35}
+                    <ImageGetter onAddImage={(response) => this.props.addImage(response)}/>
 
-                        />
-
-                        <Button
-                            onPress={() => {this.takeImage()}}
-                            iconName={'camera-alt'}
-                            iconSize={35}
-                        />
-
-                    </CardSection>
                 </Card>
             );
         }
     }
 
-    async chooseImage() {
-        let response = await uploadPhoto();
-        if(response != null) {
-            this.onAddImage(response);
-        }
-    }
-
-    async takeImage() {
-        let response = await takePhoto();
-        if(response != null){
-            this.onAddImage(response)
-        }
-    }
 
     renderModal(){
         const {
@@ -239,13 +192,7 @@ const styles = {
         flex: 1,
         marginBottom: 10
 
-    },
-
-    chooseImageContainer: {
-        justifyContent: 'space-around',
-        paddingBottom: 0
     }
-
 };
 
 const mapStateToProps = ({newChallenges}) =>{
@@ -278,7 +225,5 @@ export default connect(mapStateToProps, {
         nameChange,
         descriptionChange,
         addImage,
-    makeModalNotVisible,
-    takePhoto,
-    uploadPhoto
+    makeModalNotVisible
     })(NewChallenges);

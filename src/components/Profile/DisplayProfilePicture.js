@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { Card, CardSection, Button } from '../common';
+import { Card, CardSection, Button, ImageGetter } from '../common';
 import {
   addProfilePic,
-  uploadUpdateProfilePicture,
-    takePhoto,
-    uploadPhoto
+  uploadUpdateProfilePicture
 } from '../../Actions';
 
 
 class DisplayProfilePicture extends Component {
-
-    //add image to reducer
-  onAddImage(text) {
-    this.props.addProfilePic(text);
-  }
 
   //uploads image to firebase
   onUploadPicture = (uri) =>  {
@@ -27,19 +20,6 @@ class DisplayProfilePicture extends Component {
     saveUserUpdate({ displayName, phoneNumber });
   };
 
-    async chooseImage () {
-        let response = await uploadPhoto();
-        if(response != null) {
-            this.onAddImage(response);
-        }
-    }
-
-    async takeImage() {
-        let response = await takePhoto();
-        if(response != null){
-            this.onAddImage(response)
-        }
-    }
 
   render() {
     const { styleFirstCard, imageStyle, styleButton, chooseImageContainer } = styles;
@@ -64,21 +44,7 @@ class DisplayProfilePicture extends Component {
                 </Button>
               </CardSection>
 
-              <CardSection style={chooseImageContainer}>
-                  <Button
-                      onPress={() => {this.chooseImage()}}
-                      iconName={'photo'}
-                      iconSize={35}
-
-                  />
-
-                  <Button
-                      onPress={() => {this.takeImage()}}
-                      iconName={'camera-alt'}
-                      iconSize={35}
-                  />
-
-              </CardSection>
+              <ImageGetter onAddImage={(response) => this.props.addProfilePic(response)}/>
 
             <Text style={styles.errorTextStyle}>
               { this.props.error }
@@ -95,22 +61,7 @@ class DisplayProfilePicture extends Component {
       </CardSection>
 
 
-          <CardSection style={chooseImageContainer}>
-              <Button
-                  onPress={() => {this.chooseImage()}}
-                  iconName={'photo'}
-                  iconSize={35}
-
-              />
-
-              <Button
-                  onPress={() => {this.takeImage()}}
-                  iconName={'camera-alt'}
-                  iconSize={35}
-              />
-
-          </CardSection>
-
+          <ImageGetter onAddImage={(response) => this.props.addProfilePic(response)}/>
 
       </View>
     );
