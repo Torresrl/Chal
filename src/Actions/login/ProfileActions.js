@@ -183,7 +183,7 @@ export const uploadUpdateProfilePicture = (uri) => {
     .then(() => {
       dispatch({ type: USER_INFO_FETCH_SUCCESS, payload: currentUser });
     })
-    .then(Actions.profile({ type: 'reset' }));
+    .then(Actions.main({ type: 'reset' }));
   };
 };
 

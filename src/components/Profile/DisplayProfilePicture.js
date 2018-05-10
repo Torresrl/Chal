@@ -1,98 +1,117 @@
 import React, { Component } from 'react';
-import ImagePicker from 'react-native-image-picker';
 import { View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Card, CardSection, Button } from '../common';
 import {
   addProfilePic,
-  uploadUpdateProfilePicture } from '../../Actions';
+  uploadUpdateProfilePicture,
+    takePhoto,
+    uploadPhoto
+} from '../../Actions';
 
 
 class DisplayProfilePicture extends Component {
 
-
+    //add image to reducer
   onAddImage(text) {
     this.props.addProfilePic(text);
   }
 
-  onUploadPicture(uri) {
+  //uploads image to firebase
+  onUploadPicture = (uri) =>  {
     this.props.uploadUpdateProfilePicture(uri);
-  }
-
-  saveUserUpdate = () => {
-    const { displayName, phoneNumber } = this.props;
-    this.props.saveUserUpdate({ displayName, phoneNumber });
   };
 
-  chooseImage() {
-      const options = {
-          quality: 0
-      };
+  saveUserUpdate = () => {
+    const { displayName, phoneNumber, saveUserUpdate } = this.props;
+    saveUserUpdate({ displayName, phoneNumber });
+  };
 
-      ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('Cancel by user');
-      } else if (response.error) {
-        console.log('ImagePicker error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        this.onAddImage(response.uri);
-      }
-    });
-  }
+    async chooseImage () {
+        let response = await uploadPhoto();
+        if(response != null) {
+            this.onAddImage(response);
+        }
+    }
+
+    async takeImage() {
+        let response = await takePhoto();
+        if(response != null){
+            this.onAddImage(response)
+        }
+    }
 
   render() {
-    const { styleFirstCard, imageStyle, styleButton } = styles;
+    const { styleFirstCard, imageStyle, styleButton, chooseImageContainer } = styles;
+    const {chosen_picture_uri, render_profile_pic, user} = this.props;
 
-    if (this.props.render_profile_pic) {
+    if (render_profile_pic) {
       return (
         <View style={styleFirstCard}>
           <Card>
             <CardSection>
               <Image
-              source={{ uri: this.props.chosen_picture_uri }}
+              source={{ uri: chosen_picture_uri.uri }}
               style={imageStyle} />
             </CardSection>
 
             <CardSection>
               <Button
                 style={styleButton} onPress={() => {
-                  this.onUploadPicture(this.props.chosen_picture_uri);
+                  this.onUploadPicture(chosen_picture_uri.uri);
                 }}>
                   Allright
                 </Button>
               </CardSection>
-              <CardSection>
-              <Button
-                  style={styleButton} onPress={() => {
-                    this.chooseImage();
-                  }}>
-                  Retake
-                </Button>
-            </CardSection>
+
+              <CardSection style={chooseImageContainer}>
+                  <Button
+                      onPress={() => {this.chooseImage()}}
+                      iconName={'photo'}
+                      iconSize={35}
+
+                  />
+
+                  <Button
+                      onPress={() => {this.takeImage()}}
+                      iconName={'camera-alt'}
+                      iconSize={35}
+                  />
+
+              </CardSection>
+
             <Text style={styles.errorTextStyle}>
               { this.props.error }
             </Text>
           </Card>
         </View>
       );
-    }
-    return (
+    } else return (
       <View style={styleFirstCard}>
       <CardSection>
         <Image
-        source={{ uri: this.props.user.photoURL }}
+        source={{ uri: user.photoURL }}
         style={imageStyle} />
       </CardSection>
-      <CardSection>
-      <Button
-          style={styleButton} onPress={() => {
-            this.chooseImage();
-          }}>
-          Retake
-        </Button>
-    </CardSection>
+
+
+          <CardSection style={chooseImageContainer}>
+              <Button
+                  onPress={() => {this.chooseImage()}}
+                  iconName={'photo'}
+                  iconSize={35}
+
+              />
+
+              <Button
+                  onPress={() => {this.takeImage()}}
+                  iconName={'camera-alt'}
+                  iconSize={35}
+              />
+
+          </CardSection>
+
+
       </View>
     );
   }
@@ -133,6 +152,11 @@ const styles = {
     styleButton: {
         borderWidth: 1
     },
+
+    chooseImageContainer: {
+        justifyContent: 'space-around',
+        paddingBottom: 0
+    }
 
   };
 

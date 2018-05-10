@@ -13,8 +13,8 @@ import { NEW_PROFILE_IMAGE,
 const INITIAL_STATE = {
   render_profile_pic: false,
   user: {},
-  chosen_picture_uri: '',
-  error: ''
+  chosen_picture_uri: null,
+  error: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
