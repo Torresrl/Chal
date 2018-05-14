@@ -14,12 +14,12 @@ class Feed extends Component {
     }
 
     renderItem(item){
-        const {challengesId, challengeId, owner} = this.props;
+        const {challengesId, challengeId, owner} = item;
         return (
             <TimelineItem
                 post={item}
-                challengesId={challengesId}
-                challengeId={challengeId}
+                challengesId={challengesId} // challengesId = undefind...
+                challengeId={challengeId} // challengeId = undefind...
                 owner={owner}
             />
         );
