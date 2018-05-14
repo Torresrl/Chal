@@ -91,12 +91,6 @@ export const addChallenge = (text) => {
 };
 
 export const addChallenges = ({name, description, image, challenges, mainImage}) => {
-    //TODO blob er kommentert ut
-
-     // TODO: blob er kommentert ut, denne skal inn i dependencies i package.json
-     // "react-native-fetch-blob": "^0.10.6",
-
-
 
     const {currentUser} = firebase.auth();
     const challengesId = firebase.database().ref('posts').push().key;

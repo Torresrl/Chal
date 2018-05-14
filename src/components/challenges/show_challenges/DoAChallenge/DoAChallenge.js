@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import firebase from 'firebase';
 import {ScrollView, Text, Image, View} from 'react-native';
 import {connect} from 'react-redux';
-import {takePhoto, uploadPhoto} from '../../../../Actions';
-import {Icon, Button, ButtonGroup} from 'react-native-elements';
+import {ImageGetter} from '../../../common';
+import {Button} from 'react-native-elements';
 
 import {
     LargInput,
@@ -71,9 +71,7 @@ class DoAChallenge extends Component {
         this.props.commentChange(text);
     }
 
-    onAddImage(text){
-        this.props.addImageChallenge(text);
-    }
+
 
     onChallengeFinished(){
         const {image, comment, challengesId, challenge, owner} = this.props;
@@ -99,20 +97,6 @@ class DoAChallenge extends Component {
     }
 
 
-    async chooseImage() {
-        let response = await uploadPhoto();
-        if(response != null) {
-            this.onAddImage(response);
-        }
-    }
-
-    async takeImage() {
-        let response = await takePhoto();
-        if(response != null){
-            this.onAddImage(response)
-        }
-    }
-
     renderPictureNotDone() {
         const {image} = this.props;
         const{imageStyle} = styles;
@@ -122,55 +106,15 @@ class DoAChallenge extends Component {
                     <CardSection>
                         <Image source={{uri: image.uri}}  style={imageStyle}/>
                     </CardSection>
-                    <CardSection style={{justifyContent: 'space-around'}}>
-                        <Button onPress={() => {this.chooseImage()}}
-                                icon={{
-                                    name: 'photo',
-                                    color: 'black',
-                                    size: 35
-                                }}
-
-                                backgroundColor="#FFFFFF"
-                        />
-
-
-                        <Button onPress={() => {this.takeImage()}}
-                                icon={{
-                                    name: 'camera-alt',
-                                    color: 'black',
-                                    size: 35
-                                }}
-                                backgroundColor="#FFFFFF"
-                        />
-                    </CardSection>
+                    <ImageGetter onAddImage={(response) => this.props.addImageChallenge(response)}/>
                 </Card>
             );
         } else {
             return (
                 <Card>
-                    <CardSection style={{justifyContent: 'space-around'}}>
-                        <Button onPress={() => {this.chooseImage()}}
-                                icon={{
-                                    name: 'photo',
-                                    color: 'black',
-                                    size: 35
-                                }}
 
-                                backgroundColor="#FFFFFF"
-                        />
+                    <ImageGetter onAddImage={(response) => this.props.addImageChallenge(response)}/>
 
-
-                        <Button onPress={() => {this.takeImage()}}
-                                icon={{
-                                    name: 'camera-alt',
-                                    color: 'black',
-                                    size: 35
-                                }}
-                                backgroundColor="#FFFFFF"
-                        />
-
-
-                    </CardSection>
                 </Card>
             );
         }
@@ -400,7 +344,5 @@ export default connect(mapStateToProps,
         addImageChallenge,
         challengDone,
         getCurrentUserComment,
-        doAChallengeNavBar,
-        takePhoto,
-        uploadPhoto
+        doAChallengeNavBar
     }) (DoAChallenge);
