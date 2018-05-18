@@ -30,7 +30,7 @@ class NewUser extends Component {
 
     renderContent() {
         const{email, password, name, load} = this.props;
-        const{spinnerStyle, cardStyle, errorTextStyle, styleButton} = styles;
+        const{spinnerStyle, errorTextStyle, styleButton} = styles;
 
         if(load){
             return(
@@ -43,7 +43,7 @@ class NewUser extends Component {
         return (
 
             <View>
-                <Card style={cardStyle}>
+                <Card>
                     <CardSection >
                         <Input
                             placeholder="user@gmail.com"
@@ -116,9 +116,7 @@ const styles = {
         marginTop: 250
 
     },
-    cardStyle: {
-        marginTop: 70
-    },
+
     styleButton: {
         borderWidth: 1
     }
