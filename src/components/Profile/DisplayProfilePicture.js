@@ -21,62 +21,70 @@ class DisplayProfilePicture extends Component {
   };
 
 
+  renderImage() {
+      const {imageStyle, styleButton } = styles;
+      const {chosen_picture_uri, render_profile_pic, user} = this.props;
+
+      if (render_profile_pic) {
+         return (
+             <View>
+                 <CardSection>
+                     <Image
+                         source={{ uri: chosen_picture_uri}}
+                         style={imageStyle} />
+                 </CardSection>
+
+                 <CardSection>
+                     <Button
+                         style={styleButton} onPress={() => {
+                         this.onUploadPicture(chosen_picture_uri);
+                     }}>
+                         Allright
+                     </Button>
+                 </CardSection>
+
+             </View>
+         )
+      } else if (user.photoURL) {
+          return (
+              <View>
+                  <CardSection>
+                      <Image
+                          source={{ uri: user.photoURL }}
+                          style={imageStyle} />
+                  </CardSection>
+
+              </View>
+          )
+      } else {
+          return (
+              <View>
+              </View>
+          )
+      }
+  }
+
+
   render() {
-    const { styleFirstCard, imageStyle, styleButton, chooseImageContainer } = styles;
-    const {chosen_picture_uri, render_profile_pic, user} = this.props;
+    return (
 
-    if (render_profile_pic) {
-      return (
-        <View style={styleFirstCard}>
-          <Card>
-            <CardSection>
-              <Image
-              source={{ uri: chosen_picture_uri.uri }}
-              style={imageStyle} />
-            </CardSection>
+        <Card>
 
-            <CardSection>
-              <Button
-                style={styleButton} onPress={() => {
-                  this.onUploadPicture(chosen_picture_uri.uri);
-                }}>
-                  Allright
-                </Button>
-              </CardSection>
-
-              <ImageGetter onAddImage={(response) => this.props.addProfilePic(response)}/>
-
-            <Text style={styles.errorTextStyle}>
-              { this.props.error }
-            </Text>
-          </Card>
-        </View>
-      );
-    } else return (
-      <View style={styleFirstCard}>
-      <CardSection>
-        <Image
-        source={{ uri: user.photoURL }}
-        style={imageStyle} />
-      </CardSection>
-
-
-          <ImageGetter onAddImage={(response) => this.props.addProfilePic(response)}/>
-
-      </View>
+            {this.renderImage()}
+            <ImageGetter onAddImage={(response) => this.props.addProfilePic(response.uri)}/>
+          <Text style={styles.errorTextStyle}>
+            { this.props.error }
+          </Text>
+        </Card>
     );
+
+
+
   }
 }
 
 const styles = {
-  styleFirstCard: {
-    marginTop: 70
-  },
 
-  styleCard: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
 
   imageStyle: {
       height: 300,
@@ -88,26 +96,9 @@ const styles = {
         color: 'red',
         fontSize: 18,
         alignSelf: 'center'
-    },
-
-    spinnerStyle: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 250
-
-    },
-    cardStyle: {
-        marginTop: 70
-    },
-    styleButton: {
-        borderWidth: 1
-    },
-
-    chooseImageContainer: {
-        justifyContent: 'space-around',
-        paddingBottom: 0
     }
+
+
 
   };
 

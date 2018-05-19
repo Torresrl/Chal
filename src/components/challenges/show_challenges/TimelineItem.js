@@ -93,7 +93,7 @@ class TimelineItem extends Component {
     fanoutPost = ({votes}) => {
         const {currentUser} = firebase.auth();
         const {challengesId, challengeId} = this.props;
-        const {userId} = this.props.post;
+        const {userId, owner} = this.props.post;
 
         let fanoutObj = {};
 
@@ -103,6 +103,11 @@ class TimelineItem extends Component {
         '/challenges/' + challengeId +
         '/timeline/' + userId +
         '/voted'] = true;
+
+        fanoutObj[
+        '/Users/' + currentUser.uid +
+        '/timeline/' + challengesId +
+        challengeId + currentUser.uid + '/voted'] = true;
 
 
         fanoutObj[

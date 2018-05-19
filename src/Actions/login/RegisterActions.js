@@ -66,7 +66,7 @@ const createUserSuccess = (dispatch, user) => {
         payload: user
     });
 
-    Actions.newProfilePicture({ type: 'reset' });
+    Actions.push('newProfilePicture', { type: 'reset' });
 };
 
 

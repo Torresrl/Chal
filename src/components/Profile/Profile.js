@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import ImagePicker from 'react-native-image-picker';
-import { Actions } from 'react-native-router-flux';
 import {
-  userInfoFetch,
-  addProfilePic,
-  uploadUpdateProfilePicture
+  userInfoFetch
  } from '../../Actions';
-import { Card, CardSection, Button } from '../common';
+import { Card, CardSection } from '../common';
 
 class Profile extends Component {
 
@@ -17,113 +13,67 @@ class Profile extends Component {
     console.log('Profile picture fetch successful');
   }
 
-  onAddImage(text) {
-    this.props.addProfilePic(text);
-  }
-
-  onUploadPicture(uri) {
-    this.props.uploadUpdateProfilePicture(uri);
-  }
 
   saveUserUpdate = () => {
-    const { displayName, phoneNumber } = this.props;
-    this.props.saveUserUpdate({ displayName, phoneNumber });
+    const { displayName } = this.props;
+    this.props.saveUserUpdate({ displayName });
   };
 
-  chooseImage() {
-    const options = {
-        quality: 0
-    };
+  renderProfilePicture() {
+      const { imageStyle} = styles;
+      const {profilePicture, user} = this.props;
 
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('Cancel by user');
-      } else if (response.error) {
-        console.log('ImagePicker error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+      if (profilePicture || user.photoURL) {
+          return (
+              <CardSection>
+                  <Image
+                      source={{uri: profilePicture || user.photoURL}}
+                      style={imageStyle}
+                  />
+              </CardSection>
+          )
       } else {
-        this.onAddImage(response.uri);
+          return (
+              <View>
+              </View>
+          )
       }
-    });
   }
 
+
   render() {
-    const { imageStyle, textStyle, styleFirstCard, styleButton } = styles;
+    const {textStyleLocal} = styles;
+    const {user, name} = this.props;
 
-    if (this.props.render_profile_pic) {
-      return (
-        <View style={styleFirstCard}>
-          <Card>
-            <CardSection>
-              <Image
-              source={{ uri: this.props.chosen_picture_uri }}
-              style={imageStyle} />
-            </CardSection>
-
-            <CardSection>
-              <Button
-                style={styleButton} onPress={() => {
-                  this.onUploadPicture(this.props.chosen_picture_uri);
-                }}>
-                  Allright
-                </Button>
-              </CardSection>
-              <CardSection>
-              <Button
-                  style={styleButton} onPress={() => {
-                    this.chooseImage();
-                  }}>
-                  Retake
-                </Button>
-            </CardSection>
-            <Text style={styles.errorTextStyle}>
-              { this.props.error }
-            </Text>
-          </Card>
-        </View>
-      );
-    }
 
       return (
           <Card>
-            <TouchableOpacity onPress={() => this.chooseImage()}>
+              {this.renderProfilePicture()}
+
               <CardSection>
-                <Image
-                source={{ uri: this.props.profilePicture || this.props.user.photoURL }}
-                style={imageStyle}
-                />
+                  <Text style={textStyleLocal}>{name || user.displayName}</Text>
               </CardSection>
-            </TouchableOpacity>
-            <CardSection>
-              <Text style={textStyle}>Name: {this.props.name || this.props.user.displayName}</Text>
-            </CardSection>
-            <CardSection>
-              <Text style={textStyle}>Phone: {this.props.phoneNumber || this.props.user.phoneNumber}</Text>
-            </CardSection>
-            <CardSection>
-              <Text style={textStyle}>Display random stuff here</Text>
-            </CardSection>
-            <CardSection>
-              <Text style={textStyle}>Display random stuff here</Text>
-            </CardSection>
-            <CardSection>
-              <Text style={textStyle}>Display random stuff here</Text>
-            </CardSection>
-            <CardSection>
-              <Text style={textStyle}>Peace out</Text>
-            </CardSection>
+              <CardSection>
+                  <Text style={textStyleLocal}>Display random stuff here</Text>
+              </CardSection>
+              <CardSection>
+                  <Text style={textStyleLocal}>Display random stuff here</Text>
+              </CardSection>
+              <CardSection>
+                  <Text style={textStyleLocal}>Display random stuff here</Text>
+              </CardSection>
+              <CardSection>
+                  <Text style={textStyleLocal}>Peace out</Text>
+              </CardSection>
           </Card>
       );
+
+
   }
 }
 
 const styles = {
-    containerStyle: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+
 
     imageStyle: {
         height: 300,
@@ -134,43 +84,7 @@ const styles = {
     textStyleLocal: {
       fontSize: 18,
       paddingLeft: 6
-    },
-    styleFirstCard: {
-      marginTop: 70
-    },
-
-    styleCard: {
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-      errorTextStyle: {
-          color: 'red',
-          fontSize: 18,
-          alignSelf: 'center'
-      },
-
-      spinnerStyle: {
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 250
-
-      },
-      cardStyle: {
-          marginTop: 70
-      },
-      styleButton: {
-          borderWidth: 1
-      },
-
-    editProfile: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingLeft: 8,
-        marginBottom: 12
-
     }
-
 
 };
 
@@ -179,18 +93,12 @@ const mapStateToProps = ({ profile }) => {
   const {
     user,
     name,
-    profilePicture,
-    phoneNumber,
-    render_profile_pic,
-    chosen_picture_uri } = profile;
+    profilePicture} = profile;
 
   return {
      user,
      name,
-     profilePicture,
-     phoneNumber,
-     render_profile_pic,
-     chosen_picture_uri };
+     profilePicture};
 };
 
-export default connect(mapStateToProps, { userInfoFetch, addProfilePic, uploadUpdateProfilePicture })(Profile);
+export default connect(mapStateToProps, { userInfoFetch })(Profile);

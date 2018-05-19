@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import ImagePicker from 'react-native-image-picker';
 import { Text, View, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { CardSection, Card, Button } from '../common';
+import { CardSection, Card, Button, ImageGetter } from '../common';
 import { addProfilePic, uploadProfilePicture } from '../../Actions';
 
 
@@ -21,46 +20,33 @@ class AddProfilePicture extends Component {
     Actions.main({ type: 'reset' });
   }
 
-  chooseImage() {
-    ImagePicker.showImagePicker(null, (response) => {
-      if (response.didCancel) {
-        console.log('Cancel by user');
-      } else if (response.error) {
-        console.log('ImagePicker error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        this.onAddImage(response.uri);
-      }
-    });
-  }
 
   renderPicture() {
-    const { styleFirstCard, imageStyle, styleButton, styleCard } = styles;
-    if (this.props.render_profile_pic) {
+    const { imageStyle, styleButton, pageStyle} = styles;
+    const {chosen_picture_uri, render_profile_pic, addProfilePic} = this.props;
+
+    if (render_profile_pic) {
       return (
-        <View>
+        <View style={pageStyle}>
           <Card>
             <CardSection>
               <Image
-              source={{ uri: this.props.chosen_picture_uri }}
+              source={{ uri: chosen_picture_uri }}
               style={imageStyle}/>
             </CardSection>
 
             <CardSection>
               <Button
                 style={styleButton} onPress={() => {
-                  this.onUploadPicture(this.props.chosen_picture_uri);
+                  this.onUploadPicture(chosen_picture_uri);
                 }}>
                   Continue
                 </Button>
-              <Button
-                  style={styleButton} onPress={() => {
-                    this.chooseImage();
-                  }}>
-                  Retake
-                </Button>
+
             </CardSection>
+
+              <ImageGetter onAddImage={(response) => addProfilePic(response.uri)}/>
+
             <Text style={styles.errorTextStyle}>
               { this.props.error }
             </Text>
@@ -69,19 +55,19 @@ class AddProfilePicture extends Component {
       );
     }
     return (
-      <View style={styleFirstCard}>
-        <Card style={styleCard}>
-            <CardSection>
-              <Button style={styleButton} onPress={() => { this.chooseImage(); }}>
-              Add Picture
-              </Button>
-            </CardSection>
-          </Card>
-          <Card style={styleCard}>
+      <View style={pageStyle} >
+
+          <Card>
+
+              <ImageGetter onAddImage={(response) => addProfilePic(response.uri)}/>
+
               <CardSection>
               <Button style={styleButton} onPress={() => { this.skip(); }}>
-              Skip</Button>
+              Skip
+              </Button>
             </CardSection>
+
+
         </Card>
       </View>
     );
@@ -97,14 +83,11 @@ class AddProfilePicture extends Component {
 }
 
 const styles = {
-  styleFirstCard: {
-    marginTop: 70
-  },
 
-  styleCard: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
+    pageStyle: {
+        marginTop: 20
+    },
+
 
   imageStyle: {
       height: 300,
@@ -124,9 +107,6 @@ const styles = {
         alignItems: 'center',
         marginTop: 250
 
-    },
-    cardStyle: {
-        marginTop: 70
     },
     styleButton: {
         borderWidth: 1
