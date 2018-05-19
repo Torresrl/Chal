@@ -144,7 +144,7 @@ export const saveUserUpdate = ({ displayName, phoneNumber }) => {
         payload: [displayName, phoneNumber]
       });
     })
-    .then(Actions.profile({ type: 'reset' }));
+    .then(Actions.push("profile", { type: 'reset' }));
   };
 };
 
@@ -162,9 +162,10 @@ export const uploadProfilePicture = (uri) => {
       dispatch({ type: UPLOAD_PROFILE_PICTURE, payload: uri });
     })
     .then(console.log('Upload profile picture successfully'))
-    .then(Actions.main({ type: 'reset' }));
+    .then(Actions.push("profile", { type: 'reset' }));
   };
 };
+
 
 export const uploadUpdateProfilePicture = (uri) => {
   const { currentUser } = firebase.auth();
@@ -183,7 +184,7 @@ export const uploadUpdateProfilePicture = (uri) => {
     .then(() => {
       dispatch({ type: USER_INFO_FETCH_SUCCESS, payload: currentUser });
     })
-    .then(Actions.main({ type: 'reset' }));
+    .then(Actions.push("profile", { type: 'reset' }));
   };
 };
 

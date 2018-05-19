@@ -22,7 +22,7 @@ class AddProfilePicture extends Component {
 
 
   renderPicture() {
-    const { imageStyle, styleButton, styleCard, pageStyle} = styles;
+    const { imageStyle, styleButton, pageStyle} = styles;
     const {chosen_picture_uri, render_profile_pic, addProfilePic} = this.props;
 
     if (render_profile_pic) {
@@ -31,23 +31,21 @@ class AddProfilePicture extends Component {
           <Card>
             <CardSection>
               <Image
-              source={{ uri: chosen_picture_uri.uri }}
+              source={{ uri: chosen_picture_uri }}
               style={imageStyle}/>
             </CardSection>
 
             <CardSection>
               <Button
                 style={styleButton} onPress={() => {
-                  this.onUploadPicture(chosen_picture_uri.uri);
+                  this.onUploadPicture(chosen_picture_uri);
                 }}>
                   Continue
                 </Button>
 
-
-
             </CardSection>
 
-              <ImageGetter onAddImage={(response) => addProfilePic(response)}/>
+              <ImageGetter onAddImage={(response) => addProfilePic(response.uri)}/>
 
             <Text style={styles.errorTextStyle}>
               { this.props.error }
@@ -59,15 +57,17 @@ class AddProfilePicture extends Component {
     return (
       <View style={pageStyle} >
 
+          <Card>
 
-          <ImageGetter onAddImage={(response) => addProfilePic(response)}/>
+              <ImageGetter onAddImage={(response) => addProfilePic(response.uri)}/>
 
-
-          <Card style={styleCard}>
               <CardSection>
               <Button style={styleButton} onPress={() => { this.skip(); }}>
-              Skip</Button>
+              Skip
+              </Button>
             </CardSection>
+
+
         </Card>
       </View>
     );
@@ -88,11 +88,6 @@ const styles = {
         marginTop: 20
     },
 
-  styleCard: {
-    justifyContent: 'center',
-    alignItems: 'center',
-      flex: 1
-  },
 
   imageStyle: {
       height: 300,
